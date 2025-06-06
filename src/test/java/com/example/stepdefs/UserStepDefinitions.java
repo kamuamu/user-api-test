@@ -170,6 +170,23 @@ public class UserStepDefinitions {
         }
     }
 
+    @When("I create a user with the following details with an invalid endpoint:")
+    public void iCreateAUserWithTheFollowingDetailsWithAnInvalidEndpoint(DataTable dataTable) throws JsonProcessingException {
+        Map<String, String> userData = dataTable.asMap(String.class, String.class);
+        // Create User object using builder pattern
+        User user = objectMapper.convertValue(userData, User.class);
+        // Convert to JSON using ObjectMapper
+        String requestBody = objectMapper.writeValueAsString(user);
+
+        response = requestSpec
+                .body(requestBody)
+                .post(USER_ENDPOINT + "/invalid"); // Intentionally using an invalid endpoint
+        // Store created user for potential cleanup or further validation
+        if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+            createdUser = UserUtils.extractFirstUser(objectMapper, response);
+        }
+    }
+
     @And("the response should match the {string} schema")
     public void theResponseShouldMatchTheUserSchema(String schemaFile) {
         response.then()

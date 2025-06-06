@@ -37,3 +37,11 @@ Feature: User Management
       Then the response status should be 409
       And the response should contain "users_email_key"
       And the response should match the "schemas/error-response-schema.json" schema
+
+  Scenario: Attempt to create user with wrong endpoint
+    When I create a user with the following details with an invalid endpoint:
+      | first_name | Sid              |
+      | last_name  | Selvan           |
+      | email      | sid.ss@gmail.com |
+      | age        | 28               |
+    Then the response status should be 404
