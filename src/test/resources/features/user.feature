@@ -1,4 +1,4 @@
-@userE2ETest
+@UserE2ETest
 Feature: User Management
   As a system user
   I want to manage user profiles
@@ -13,51 +13,42 @@ Feature: User Management
     And the response should contain users
     And the response should match the user schema
 
-  Scenario Outline: Create a new user successfully
+  Scenario: Create a new user successfully
     When I create a user with the following details:
-      | first_name  | <first_name>  |
-      | last_name   | <last_name>   |
-      | email       | <email>       |
-      | age         | <age>         |
+      | first_name | John                 |
+      | last_name  | Doe                  |
+      | email      | john.doe@example.com |
+      | age        | 35                   |
     Then the response status should be 201
     And the response should match the user schema
     And the response should contain the created user details
     And the user should have a valid ID
-    Examples:
-      | first_name  | last_name | email                 | age |
-      | John        | Doe       | john.doe@example.com  | 35  |
 
-  Scenario Outline: Update an existing user successfully
+  Scenario: Update an existing user successfully
     Given I create a user with the following details:
-      | first_name  | <first_name>  |
-      | last_name   | <last_name>   |
-      | email       | <email>       |
-      | age         | <age>         |
+      | first_name  | Jane                  |
+      | last_name   | Doe                   |
+      | email       | john.doe@example.com  |
+      | age         | 35                    |
     When I update the user with the following details:
-      | first_name  | Jane            |
-      | last_name   | Smith           |
-      | email       | jane@smith.com  |
-      | age         | 29              |
+      | first_name | Jane           |
+      | last_name  | Smith          |
+      | email      | jane@smith.com |
+      | age        | 28             |
     Then the response status should be 200
     And the response should match the user schema
     And the user's ID is unaltered
     And the user's last name should be "Smith"
     And the user's email should be "jane@smith.com"
-    And the user's age should be 29
-    Examples:
-      | first_name  | last_name | email                 | age |
-      | Jane        | Johnson   | jane@johnson.com      | 28  |
+    And the user's age should be 28
 
-  Scenario Outline: Delete an existing user successfully
+  Scenario: Delete an existing user successfully
     Given I create a user with the following details:
-      | first_name  | <first_name>  |
-      | last_name   | <last_name>   |
-      | email       | <email>       |
-      | age         | <age>         |
+      | first_name | Jane             |
+      | last_name  | Johnson          |
+      | email      | jane@johnson.com |
+      | age        | 28               |
     When I delete the user
     Then the response status should be 200
     And when I try to retrieve the deleted user
     Then the response should not contain users
-    Examples:
-      | first_name  | last_name | email                 | age |
-      | Jane        | Johnson   | jane@johnson.com      | 28  |
