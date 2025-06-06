@@ -31,7 +31,7 @@ This test suite provides automated testing for a user management system with ful
 
 The tests interact with the following live API endpoint:
 
-`https://preview--friendly-user-profiles-api.lovable.app/`
+https://preview--friendly-user-profiles-api.lovable.app/
 
 ---
 
