@@ -22,6 +22,7 @@
         <assertj.version>3.24.2</assertj.version>
         <logback.version>1.5.13</logback.version>
         <lombok.version>1.18.38</lombok.version>
+        <commons.version>3.14.0</commons.version>
     </properties>
 
     <dependencies>
@@ -70,12 +71,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- WireMock for API mocking -->
         <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock-jre8-standalone</artifactId>
-            <version>${wiremock.version}</version>
-            <scope>test</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.version}</version>
         </dependency>
 
         <!-- JSON processing -->

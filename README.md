@@ -1,10 +1,10 @@
 # User API Test
 
-A comprehensive BDD (Behavior-Driven Development) test suite for user profile management API using REST Assured.
+A comprehensive BDD (Behavior-Driven Development) test suite for user management API using REST Assured.
 
 ## Overview
 
-This test suite provides automated testing for a user profile management system with full CRUD operations. It uses a live api server to test API responses and validates user management functionality through readable Gherkin scenarios.
+This test suite provides automated testing for a user management system with full CRUD operations. It uses a live api server to test API responses and validates user management functionality through readable Gherkin scenarios.
 
 ## Technology Stack
 
@@ -16,6 +16,9 @@ This test suite provides automated testing for a user profile management system 
 - **AssertJ** - Fluent assertion library
 - **Hamcrest** - Matcher library for assertions
 - **Lombok** - Java library for reducing boilerplate code
+
+## API Def
+https://preview--friendly-user-profiles-api.lovable.app/
 
 ## Project Structure
 
