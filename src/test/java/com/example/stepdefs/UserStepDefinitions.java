@@ -91,6 +91,7 @@ public class UserStepDefinitions {
             // Construct the IN filter for the DELETE request
             // Example: id=in.(id1,id2,id3)
             String idFilter = "in.(" + String.join(",", idsToDelete) + ")";
+            logger.info("Cleaning up users with IDs: {}", idsToDelete);
 
             // Send a single DELETE request with the 'in' filter
             // IMPORTANT: Create a NEW RequestSpecification instance for cleanup
