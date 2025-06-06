@@ -155,6 +155,15 @@ public class UserStepDefinitions {
 
     @When("I create a user with the following details:")
     public void iCreateAUserWithTheFollowingDetails(DataTable dataTable) throws JsonProcessingException {
+        createUser(dataTable);
+    }
+
+    @And("When I create another user with the following details:")
+    public void whenICreateAnotherUserWithTheFollowingDetails(DataTable dataTable) throws JsonProcessingException {
+        createUser(dataTable);
+    }
+
+    private void createUser(DataTable dataTable) throws JsonProcessingException {
         Map<String, String> userData = dataTable.asMap(String.class, String.class);
         // Create User object using builder pattern
         User user = objectMapper.convertValue(userData, User.class);

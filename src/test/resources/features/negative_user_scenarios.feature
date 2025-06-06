@@ -21,3 +21,18 @@ Feature: User Management
       | Sid        | Selvan    | invalid-email      | 28  | check_email_format   |
       | Sid        | Selvan    | sid.ss@example.com | 200 | check_age_positive   |
       | Sid        | Selvan    | sid.ss@example.com | -5  | check_age_positive   |
+
+    Scenario: Attempt to create user with email that exists already in the system
+      When I create a user with the following details:
+        | first_name | Sid              |
+        | last_name  | Selvan           |
+        | email      | sid.ss@gmail.com |
+        | age        | 28               |
+      And When I create another user with the following details:
+        | first_name | Sara             |
+        | last_name  | Sid              |
+        | email      | sid.ss@gmail.com |
+        | age        | 23               |
+      And the response status should be 409
+      And the response should contain "users_email_key"
+      And the response should match the "schemas/error-response-schema.json" schema
