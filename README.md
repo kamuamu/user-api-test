@@ -41,23 +41,23 @@ https://preview--friendly-user-profiles-api.lovable.app/
 src/
 ├── main/java
 │   └── com/example/models/
-│       └── User.java                           # User model with builder pattern
-│   └── com/example/utils/
-│       └── UserUtils.java                      # Utility methods for user extraction
+│       └── User.java                               # User model with builder pattern
 └── test/java
 │   ├── com/example/runners/
-│   │   └── CucumberTestRunner.java             # JUnit 5 test runner
+│   │   └── CucumberTestRunner.java                 # JUnit 5 test runner
 │   └── com/example/stepdefs/
-│       └── UserStepDefinitions.java            # Cucumber step implementations
+│       └── UserStepDefinitions.java                # Cucumber step implementations
+│   └── com/example/utils/
+│       └── UserUtils.java                          # Utility methods for user extraction
 └── test/resources/
-├── features/
-│   └── user.feature                            # E2E test scenarios for user management
-│   └── negative_user_scenarios.feature         # Example for negative test cases
-│   └── create_multiple_users.feature           # Example for creating multiple users
-└── schemas/
-├── user-schema.json                            # JSON schema for a single user object
-├── users-list-schema.json                      # JSON schema for a list of user objects
-└── error-response-schema.json                  # JSON schema for API error responses
+    ├── features/
+    │       └── user.feature                        # E2E test scenarios for user management
+    │       └── negative_user_scenarios.feature     # Example for negative test cases
+    │       └── create_multiple_users.feature       # Example for creating multiple users
+    └── schemas/
+            ├── user-schema.json                    # JSON schema for a single user object
+            ├── users-list-schema.json              # JSON schema for a list of user objects
+            └── error-response-schema.json          # JSON schema for API error responses
 ```
 
 ---
