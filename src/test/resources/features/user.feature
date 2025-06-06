@@ -11,6 +11,7 @@ Feature: User Management
     When I request all users
     Then the response status should be 200
     And the response should contain users
+    And the response should match the user schema
 
   Scenario Outline: Create a new user successfully
     When I create a user with the following details:
@@ -19,6 +20,7 @@ Feature: User Management
       | email       | <email>       |
       | age         | <age>         |
     Then the response status should be 201
+    And the response should match the user schema
     And the response should contain the created user details
     And the user should have a valid ID
     Examples:
@@ -37,6 +39,7 @@ Feature: User Management
       | email       | jane@smith.com  |
       | age         | 29              |
     Then the response status should be 200
+    And the response should match the user schema
     And the user's ID is unaltered
     And the user's last name should be "Smith"
     And the user's email should be "jane@smith.com"

@@ -3,7 +3,6 @@ package com.example.stepdefs;
 import com.example.models.User;
 import com.example.utils.UserUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import io.cucumber.datatable.DataTable;
@@ -20,12 +19,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -164,9 +163,15 @@ public class UserStepDefinitions {
         this.createdUser = UserUtils.extractFirstUser(objectMapper, response);
     }
 
+    @And("the response should match the user schema")
+    public void theResponseShouldMatchTheUserSchema() {
+        response.then()
+                .assertThat()
+                .body(matchesJsonSchemaInClasspath("schemas/user-list-schema.json"));
+    }
+
     @And("the response should contain the created user details")
     public void theResponseShouldContainTheCreatedUserDetails() throws Exception {
-
         // Validate using the parsed object
         assertNotNull(createdUser, "User should not be null");
         assertNotNull(createdUser.getId(), "User ID should not be null");
@@ -218,7 +223,7 @@ public class UserStepDefinitions {
 
     @When("I delete the user")
     public void iDeleteTheUser() {
-        response = requestSpec.param("id", "eq."+ createdUser.getId()).delete(USER_ENDPOINT);
+        response = requestSpec.param("id", "eq." + createdUser.getId()).delete(USER_ENDPOINT);
     }
 
     @And("when I try to retrieve the deleted user")

@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Users List",
+  "description": "Schema for a list of user objects",
+  "type": "array",
+  "items": {
+    "$ref": "user-schema.json"
+  }
+}
