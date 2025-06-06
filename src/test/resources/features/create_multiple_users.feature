@@ -14,13 +14,13 @@ Feature: Create Users
       | email       | <email>       |
       | age         | <age>         |
     Then the response status should be 201
-    And the response should match the user schema
+    And the response should match the "schemas/user-list-schema.json" schema
     And the response should contain the created user details
     And the user should have a valid ID
     Examples:
-      | first_name | last_name | email                  | age |
-      | John       | Doe       | john.doe@example.com   | 35  |
-      | Jane       | Smith     | jane.smith@example.com | 28  |
-      | Michael    | Johnson   | michaelj@example.com   | 42  |
-      | Emily      | Davis     | emily.d@example.com    | 23  |
-      | David      | Brown     | davidb@example.com     | 50  |
+      | first_name | last_name | email                | age |
+      | Karthik    | Rajan     | karthikr@example.com | 35  |
+      | Priya      | Selvi     | priyas@example.com   | 28  |
+      | Anand      | Kumar     | anandk@example.com   | 42  |
+      | Meena      | Devi      | meenad@example.com   | 23  |
+      | Suresh     | Pandian   | sureshp@example.com  | 50  |

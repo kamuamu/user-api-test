@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Error Response",
+  "description": "Schema for Supabase/PostgREST error responses",
+  "type": "object",
+  "required": [
+    "code",
+    "details",
+    "hint",
+    "message"
+  ],
+  "properties": {
+    "code": {
+      "type": ["string", "null"],
+      "description": "The PostgreSQL error code (e.g., '23514' for check constraint violation)"
+    },
+    "details": {
+      "type": ["string", "null"],
+      "description": "Additional details about the error"
+    },
+    "hint": {
+      "type": ["string", "null"],
+      "description": "A hint on how to resolve the error"
+    },
+    "message": {
+      "type": "string",
+      "description": "A human-readable error message"
+    }
+  },
+  "additionalProperties": false
+}

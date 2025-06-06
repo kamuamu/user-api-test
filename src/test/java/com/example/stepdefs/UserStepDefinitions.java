@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,7 +68,9 @@ public class UserStepDefinitions {
         response = requestSpec
                 .body(requestBody)
                 .post(USER_ENDPOINT);
-        existingUser = UserUtils.extractFirstUser(objectMapper, response);
+        if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+            existingUser = UserUtils.extractFirstUser(objectMapper, response);
+        }
     }
 
     @After
@@ -161,14 +165,16 @@ public class UserStepDefinitions {
                 .body(requestBody)
                 .post(USER_ENDPOINT);
         // Store created user for potential cleanup or further validation
-        this.createdUser = UserUtils.extractFirstUser(objectMapper, response);
+        if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+            createdUser = UserUtils.extractFirstUser(objectMapper, response);
+        }
     }
 
-    @And("the response should match the user schema")
-    public void theResponseShouldMatchTheUserSchema() {
+    @And("the response should match the {string} schema")
+    public void theResponseShouldMatchTheUserSchema(String schemaFile) {
         response.then()
                 .assertThat()
-                .body(matchesJsonSchemaInClasspath("schemas/user-list-schema.json"));
+                .body(matchesJsonSchemaInClasspath(schemaFile));
     }
 
     @And("the response should contain the created user details")
@@ -198,13 +204,20 @@ public class UserStepDefinitions {
                 .body(requestBody)
                 .param("id", "eq." + createdUser.getId())
                 .patch(USER_ENDPOINT);
-        this.updatedUser = UserUtils.extractFirstUser(objectMapper, response);
+        if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+            this.updatedUser = UserUtils.extractFirstUser(objectMapper, response);
+        }
     }
 
 
     @And("the user's ID is unaltered")
     public void theUsersIDisUnaltered() throws Exception {
         assertEquals(createdUser.getId(), updatedUser.getId());
+    }
+
+    @And("the user's first name should be {string}")
+    public void theUsersFirstNameShouldBe(String expectedFirstName) throws Exception {
+        assertEquals(expectedFirstName, updatedUser.getFirstName());
     }
 
     @And("the user's last name should be {string}")
@@ -230,5 +243,12 @@ public class UserStepDefinitions {
     @And("when I try to retrieve the deleted user")
     public void whenITryToRetrieveTheDeletedUser() {
         response = requestSpec.param("id", "eq." + createdUser.getId()).get(USER_ENDPOINT);
+    }
+
+    @And("the response should contain {string}")
+    public void theResponseShouldContainError(String errorSubString) {
+        response.then()
+                .assertThat()
+                .body("message", containsString(errorSubString));
     }
 }
