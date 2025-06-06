@@ -46,7 +46,7 @@ public class UserStepDefinitions {
             .email("kamu@belyf.com")
             .firstName("Kamatchi")
             .lastName("Manickam")
-            .age(29)
+            .age("29")
             .build();
     private User createdUser;
     private User updatedUser;
@@ -247,8 +247,8 @@ public class UserStepDefinitions {
         assertEquals(expectedEmail, updatedUser.getEmail());
     }
 
-    @And("the user's age should be {int}")
-    public void theUsersAgeShouldBe(int expectedAge) throws Exception {
+    @And("the user's age should be {string}")
+    public void theUsersAgeShouldBe(String expectedAge) throws Exception {
         assertEquals(expectedAge, updatedUser.getAge());
     }
 

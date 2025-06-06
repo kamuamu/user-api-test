@@ -17,10 +17,14 @@ Feature: User Management
     And the response should contain "<error>"
     And the response should match the "schemas/error-response-schema.json" schema
     Examples:
-      | first_name | last_name | email              | age | error                |
-      | Sid        | Selvan    | invalid-email      | 28  | check_email_format   |
-      | Sid        | Selvan    | sid.ss@example.com | 200 | check_age_positive   |
-      | Sid        | Selvan    | sid.ss@example.com | -5  | check_age_positive   |
+      | first_name | last_name | email              | age | error                                                             |
+      | Sid        | Selvan    | invalid-email      | 28  | check_email_format                                                |
+      | Sid        | Selvan    | sid.ss@example.com | 200 | check_age_positive                                                |
+      | Sid        | Selvan    | sid.ss@example.com | -5  | check_age_positive                                                |
+      | Sid        | Selvan    | a@sid.com          | h   | invalid input syntax for type integer                             |
+      | Sid        | Selvan    |                    | 21  | \"email\" of relation \"users\" violates not-null constraint      |
+      |            | Selvan    | a@sid.com          | 21  | \"first_name\" of relation \"users\" violates not-null constraint |
+
 
     Scenario: Attempt to create user with email that exists already in the system
       When I create a user with the following details:

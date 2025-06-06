@@ -41,7 +41,7 @@ Feature: User Management
     And the user's first name should be "Niranjan"
     And the user's last name should be "Srinivasan"
     And the user's email should be "ns@niran.com"
-    And the user's age should be 28
+    And the user's age should be "28"
 
   Scenario: Delete an existing user successfully
     Given I create a user with the following details:
