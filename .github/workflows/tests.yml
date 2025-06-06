@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
-    environment: test # <--- This line tells the job to use the 'test' environment
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -30,4 +27,4 @@ jobs:
       - name: Run Maven Tests and Generate Reports
         run: mvn clean verify
         env:
-          CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
+          CUCUMBER_PUBLISH_TOKEN: 2bded453-b3ff-41a6-b295-bfc0a64fb4be
