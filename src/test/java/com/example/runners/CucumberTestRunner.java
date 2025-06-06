@@ -13,5 +13,6 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.example.stepdefs")
 @ConfigurationParameter(key = "cucumber.publish.enabled", value = "true")
+@ConfigurationParameter(key = "cucumber.publish.token", value = "67c67e34-0fc0-4057-a953-ca2a4b185a9d")
 public class CucumberTestRunner {
 }
