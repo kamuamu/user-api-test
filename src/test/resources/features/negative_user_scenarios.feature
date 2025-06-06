@@ -28,11 +28,12 @@ Feature: User Management
         | last_name  | Selvan           |
         | email      | sid.ss@gmail.com |
         | age        | 28               |
-      And When I create another user with the following details:
+      Then the response status should be 201
+      When I create a user with the following details:
         | first_name | Sara             |
         | last_name  | Sid              |
         | email      | sid.ss@gmail.com |
         | age        | 23               |
-      And the response status should be 409
+      Then the response status should be 409
       And the response should contain "users_email_key"
       And the response should match the "schemas/error-response-schema.json" schema
