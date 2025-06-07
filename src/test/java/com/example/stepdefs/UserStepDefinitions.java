@@ -121,7 +121,7 @@ public class UserStepDefinitions {
 
     @Given("the user service is running")
     public void theUserServiceIsRunning() {
-        requestSpec.get(USER_ENDPOINT)
+        requestSpec.get("/")
                 .then()
                 .assertThat()
                 .statusCode(200);
