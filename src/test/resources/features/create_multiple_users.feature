@@ -15,8 +15,10 @@ Feature: Create Users
       | age         | <age>         |
     Then the response status should be 201
     And the response should match the "schemas/user-list-schema.json" schema
-    And the response should contain the created user details
-    And the user should have a valid ID
+    And the user's first name should be "<first_name>"
+    And the user's last name should be "<last_name>"
+    And the user's email should be "<email>"
+    And the user's age should be "<age>"
     Examples:
       | first_name | last_name | email                | age |
       | Karthik    | Rajan     | karthikr@example.com | 35  |

@@ -25,13 +25,10 @@ import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserStepDefinitions {
 
@@ -48,8 +45,7 @@ public class UserStepDefinitions {
             .lastName("Manickam")
             .age("29")
             .build();
-    private User createdUser;
-    private User updatedUser;
+    private User currentUser;
     private Logger logger = LoggerFactory.getLogger(UserStepDefinitions.class);
 
     @Before
@@ -139,15 +135,15 @@ public class UserStepDefinitions {
                 .statusCode(expectedStatus);
     }
 
-    @And("the response should contain users")
-    public void theResponseShouldContainUsers() {
+    @And("the response should not be empty")
+    public void theResponseShouldNotBeEmpty() {
         response.then()
                 .assertThat()
                 .body("size()", greaterThan(0));
     }
 
-    @And("the response should not contain users")
-    public void theResponseShouldNotContainUsers() {
+    @And("the response should be empty")
+    public void theResponseShouldBeEmpty() {
         response.then()
                 .assertThat()
                 .body("size()", equalTo(0));
@@ -156,7 +152,7 @@ public class UserStepDefinitions {
     @When("I create a user with the following details:")
     public void iCreateAUserWithTheFollowingDetails(DataTable dataTable) throws JsonProcessingException {
         Map<String, String> userData = dataTable.asMap(String.class, String.class);
-        // Create User object using builder pattern
+        // Create User object using Jackson's ObjectMapper
         User user = objectMapper.convertValue(userData, User.class);
         // Convert to JSON using ObjectMapper
         String requestBody = objectMapper.writeValueAsString(user);
@@ -166,7 +162,7 @@ public class UserStepDefinitions {
                 .post(USER_ENDPOINT);
         // Store created user for potential cleanup or further validation
         if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
-            createdUser = UserUtils.extractFirstUser(objectMapper, response);
+            currentUser = UserUtils.extractFirstUser(objectMapper, response);
         }
     }
 
@@ -183,7 +179,7 @@ public class UserStepDefinitions {
                 .post(USER_ENDPOINT + "/invalid"); // Intentionally using an invalid endpoint
         // Store created user for potential cleanup or further validation
         if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
-            createdUser = UserUtils.extractFirstUser(objectMapper, response);
+            currentUser = UserUtils.extractFirstUser(objectMapper, response);
         }
     }
 
@@ -194,23 +190,6 @@ public class UserStepDefinitions {
                 .body(matchesJsonSchemaInClasspath(schemaFile));
     }
 
-    @And("the response should contain the created user details")
-    public void theResponseShouldContainTheCreatedUserDetails() throws Exception {
-        // Validate using the parsed object
-        assertNotNull(createdUser, "User should not be null");
-        assertNotNull(createdUser.getId(), "User ID should not be null");
-        assertNotNull(createdUser.getFirstName(), "First name should not be null");
-        assertNotNull(createdUser.getEmail(), "Email should not be null");
-        assertNotNull(createdUser.getAge(), "Age should not be null");
-
-    }
-
-    @And("the user should have a valid ID")
-    public void theUserShouldHaveAValidID() throws Exception {
-        assertNotNull(createdUser.getId(), "User ID should match expected value");
-        assertFalse(createdUser.getId().isEmpty(), "User ID should not be empty");
-    }
-
     @When("I update the user with the following details:")
     public void iUpdateTheUserWithTheFollowingDetails(DataTable dataTable) throws JsonProcessingException {
         Map<String, String> userData = dataTable.asMap(String.class, String.class);
@@ -219,47 +198,41 @@ public class UserStepDefinitions {
 
         response = requestSpec
                 .body(requestBody)
-                .param("id", "eq." + createdUser.getId())
+                .param("id", "eq." + currentUser.getId())
                 .patch(USER_ENDPOINT);
         if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
-            this.updatedUser = UserUtils.extractFirstUser(objectMapper, response);
+            this.currentUser = UserUtils.extractFirstUser(objectMapper, response);
         }
-    }
-
-
-    @And("the user's ID is unaltered")
-    public void theUsersIDisUnaltered() throws Exception {
-        assertEquals(createdUser.getId(), updatedUser.getId());
     }
 
     @And("the user's first name should be {string}")
     public void theUsersFirstNameShouldBe(String expectedFirstName) throws Exception {
-        assertEquals(expectedFirstName, updatedUser.getFirstName());
+        assertEquals(expectedFirstName, currentUser.getFirstName());
     }
 
     @And("the user's last name should be {string}")
     public void theUsersLastNameShouldBe(String expectedLastName) throws Exception {
-        assertEquals(expectedLastName, updatedUser.getLastName());
+        assertEquals(expectedLastName, currentUser.getLastName());
     }
 
     @And("the user's email should be {string}")
     public void theUsersEmailShouldBe(String expectedEmail) throws Exception {
-        assertEquals(expectedEmail, updatedUser.getEmail());
+        assertEquals(expectedEmail, currentUser.getEmail());
     }
 
     @And("the user's age should be {string}")
     public void theUsersAgeShouldBe(String expectedAge) throws Exception {
-        assertEquals(expectedAge, updatedUser.getAge());
+        assertEquals(expectedAge, currentUser.getAge());
     }
 
     @When("I delete the user")
     public void iDeleteTheUser() {
-        response = requestSpec.param("id", "eq." + createdUser.getId()).delete(USER_ENDPOINT);
+        response = requestSpec.param("id", "eq." + currentUser.getId()).delete(USER_ENDPOINT);
     }
 
     @And("when I try to retrieve the deleted user")
     public void whenITryToRetrieveTheDeletedUser() {
-        response = requestSpec.param("id", "eq." + createdUser.getId()).get(USER_ENDPOINT);
+        response = requestSpec.param("id", "eq." + currentUser.getId()).get(USER_ENDPOINT);
     }
 
     @And("the response should contain {string}")

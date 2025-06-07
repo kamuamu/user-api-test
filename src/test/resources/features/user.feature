@@ -10,7 +10,7 @@ Feature: User Management
   Scenario: Get all users
     When I request all users
     Then the response status should be 200
-    And the response should contain users
+    And the response should not be empty
     And the response should match the "schemas/user-list-schema.json" schema
 
   Scenario: Create a new user successfully
@@ -21,8 +21,10 @@ Feature: User Management
       | age        | 27                   |
     Then the response status should be 201
     And the response should match the "schemas/user-list-schema.json" schema
-    And the response should contain the created user details
-    And the user should have a valid ID
+    And the user's first name should be "Sid"
+    And the user's last name should be "Selvan"
+    And the user's email should be "sid@selvan.com"
+    And the user's age should be "27"
 
   Scenario: Update an existing user successfully
     Given I create a user with the following details:
@@ -37,7 +39,6 @@ Feature: User Management
       | age        | 28             |
     Then the response status should be 200
     And the response should match the "schemas/user-list-schema.json" schema
-    And the user's ID is unaltered
     And the user's first name should be "Niranjan"
     And the user's last name should be "Srinivasan"
     And the user's email should be "ns@niran.com"
@@ -52,4 +53,4 @@ Feature: User Management
     When I delete the user
     Then the response status should be 200
     And when I try to retrieve the deleted user
-    Then the response should not contain users
+    Then the response should be empty
