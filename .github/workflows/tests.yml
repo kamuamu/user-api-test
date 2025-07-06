@@ -5,7 +5,8 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+  schedule:
+    - cron: '0 15 * * *'   # 🔁 Daily at 5:00 PM UTC
 jobs:
   run-api-tests:
     runs-on: ubuntu-latest
