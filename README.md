@@ -86,8 +86,28 @@ src/
     ```bash
     mvn clean test   
     ```
+
+---
+
+## Offline/WireMock Mode
+
+You can run the suite against a local WireMock stub instead of the live Supabase API. This keeps tests deterministic and offline.
+
+- Enable WireMock by setting `USE_WIREMOCK=true` (env var or JVM system property). Example:
+  ```bash
+  USE_WIREMOCK=true mvn clean test
+  # or
+  mvn clean test -DUSE_WIREMOCK=true
+  ```
+- The WireMock server spins up automatically on a random localhost port. It uses an in-memory transformer to simulate the `/users` endpoints, including:
+  - Happy-path CRUD with schema-compliant payloads
+  - Duplicate email conflict (409) and validation failures (400) matching the existing negative scenarios
+  - Not-found responses for invalid endpoints
+
+Leave `USE_WIREMOCK` unset to keep hitting the live API as before.
 ---
 
 ## Reports
 
-Reports are generated in https://reports.cucumber.io/report-collections/73012008-93b6-4843-8a88-113a1dc48320
+~~Reports are generated in https://reports.cucumber.io/report-collections/73012008-93b6-4843-8a88-113a1dc48320~~ 
+The report collection at cucumber.io is deprecated. Turned off the report publishing, so the tests can be truly local.

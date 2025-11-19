@@ -20,6 +20,7 @@
         <wiremock.version>2.35.1</wiremock.version>
         <jackson.version>2.15.2</jackson.version>
         <assertj.version>3.24.2</assertj.version>
+        <slf4j.version>2.0.13</slf4j.version>
         <logback.version>1.5.13</logback.version>
         <lombok.version>1.18.38</lombok.version>
         <commons.version>3.14.0</commons.version>
@@ -72,6 +73,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>${wiremock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons.version}</version>
@@ -81,6 +89,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
             <scope>test</scope>
         </dependency>
@@ -99,6 +113,12 @@
         </dependency>
 
         <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
