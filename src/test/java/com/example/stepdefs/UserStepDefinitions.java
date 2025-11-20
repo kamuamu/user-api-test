@@ -35,13 +35,14 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserStepDefinitions {
 
     private RequestSpecification requestSpec;
     private static final String DEFAULT_BASE_URL = "https://mrvndkxjhndplhhjmkbf.supabase.co/rest/v1";
-    // apiKey is given as plain text for demonstration purposes. In a real application, it should be stored securely.
+    // apiKey is given as plain text for demonstration purposes. In a real
+    // application, it should be stored securely.
     private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ydm5ka3hqaG5kcGxoaGpta2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxNDMxMDcsImV4cCI6MjA2NDcxOTEwN30.1g03KgbnmXOwjPdeT72QRlUBQWwnald5aD4lSqkKAw0";
     private static final String USER_ENDPOINT = "/users";
     private Response response;
@@ -164,7 +165,6 @@ public class UserStepDefinitions {
                 .willReturn(aResponse().withStatus(200).withBody("OK")));
     }
 
-
     @Given("the user service is running")
     public void theUserServiceIsRunning() {
         requestSpec.get("/")
@@ -217,7 +217,8 @@ public class UserStepDefinitions {
     }
 
     @When("I create a user with the following details with an invalid endpoint:")
-    public void iCreateAUserWithTheFollowingDetailsWithAnInvalidEndpoint(DataTable dataTable) throws JsonProcessingException {
+    public void iCreateAUserWithTheFollowingDetailsWithAnInvalidEndpoint(DataTable dataTable)
+            throws JsonProcessingException {
         Map<String, String> userData = dataTable.asMap(String.class, String.class);
         // Create User object using builder pattern
         User user = objectMapper.convertValue(userData, User.class);
@@ -257,22 +258,22 @@ public class UserStepDefinitions {
 
     @And("the user's first name should be {string}")
     public void theUsersFirstNameShouldBe(String expectedFirstName) throws Exception {
-        assertEquals(expectedFirstName, currentUser.getFirstName());
+        assertThat(currentUser.getFirstName()).isEqualTo(expectedFirstName);
     }
 
     @And("the user's last name should be {string}")
     public void theUsersLastNameShouldBe(String expectedLastName) throws Exception {
-        assertEquals(expectedLastName, currentUser.getLastName());
+        assertThat(currentUser.getLastName()).isEqualTo(expectedLastName);
     }
 
     @And("the user's email should be {string}")
     public void theUsersEmailShouldBe(String expectedEmail) throws Exception {
-        assertEquals(expectedEmail, currentUser.getEmail());
+        assertThat(currentUser.getEmail()).isEqualTo(expectedEmail);
     }
 
     @And("the user's age should be {string}")
     public void theUsersAgeShouldBe(String expectedAge) throws Exception {
-        assertEquals(expectedAge, currentUser.getAge());
+        assertThat(currentUser.getAge()).isEqualTo(expectedAge);
     }
 
     @When("I delete the user")
