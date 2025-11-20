@@ -55,7 +55,8 @@ public class InMemoryUserTransformer extends ResponseDefinitionTransformer {
     }
 
     @Override
-    public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition, FileSource files, Parameters parameters) {
+    public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition, FileSource files,
+            Parameters parameters) {
         String path = request.getUrl().split("\\?")[0];
 
         if ("/".equals(path)) {
@@ -180,7 +181,8 @@ public class InMemoryUserTransformer extends ResponseDefinitionTransformer {
 
         if (idFilter.startsWith("in.(")) {
             String csv = StringUtils.removeEnd(StringUtils.removeStart(idFilter, "in.("), ")");
-            for (String id : csv.split(",")) {
+            List<String> list = List.of(csv.split(","));
+            for (String id : list) {
                 store.remove(id);
             }
             return new ResponseDefinitionBuilder().withStatus(204).build();
